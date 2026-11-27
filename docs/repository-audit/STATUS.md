@@ -88,3 +88,23 @@ Detailed review: [EXTERNAL-REPOSITORY-REVIEW.md](./EXTERNAL-REPOSITORY-REVIEW.md
 - The published Headwind Remote documentation references an Android agent path that returned 404 when checked. Exact source identity and licensing remain unresolved; do not depend on that path or an unverified binary.
 - No code from either external repository has been copied or executed.
 - No application code has been implemented, built or deployed in this repository; it remains documentation-only.
+
+
+## 8. MDMesh canonical-source audit — 2026-11-27
+
+Detailed report: [MDMesh source audit](./MDMESH-SOURCE-AUDIT.md).
+
+- Canonical repository verified as `MDMesh-app/MDMesh`; the older `Likhith2007/mdm` identity is an alias/older repository identity, not the canonical URL to pin.
+- Reviewed `main` at `13c99b06c49bb71366672cef1cc5638ab6e7eb1c`, corresponding to v0.6.0.
+- MDMesh is a strong Android MDM foundation candidate: Device Owner QR enrollment, policies, kiosk, app delivery, telemetry, organization roles, audit, signed releases and updater/rollback.
+- Live remote screen capture, WebRTC signaling and input injection remain stubs/deferred.
+- v0.6.0 removes the unused two-factor setting; the upgrade notes state users authenticate with passwords alone until MFA is implemented.
+- The release changelog identifies a kiosk security fix affecting agents through 0.5.1 on Android 11+; use 0.6.0 or later and update every kiosk agent.
+- The v0.6.0 commit reports CI/native tests green but explicitly says the device check was skipped.
+- Release signing-key custody is called out as an unresolved operational TODO in the Android build configuration.
+- License is Apache-2.0 with Headwind-derived code; preserve NOTICE, attribution, change notices and dependency inventory.
+- No MDMesh source or binary has been copied, executed, built or deployed in this repository.
+
+## 9. Updated decision
+
+MDMesh replaces the earlier standalone Headwind repositories as the leading candidate for a controlled foundation evaluation. It is not approved for customer production until a clean CI build, real-device enrollment/policy test, MFA restoration, tenant-isolation verification, signing-key custody plan and remote-support implementation are complete.
