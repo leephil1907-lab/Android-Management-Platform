@@ -31,7 +31,7 @@ README identifies it as MDMesh and links the project identity https://github.com
 - Staged canary rollout and rollback.
 - Docker deployment and edge/TLS setup.
 
-The repository README claims Apache-2.0. The inspected LICENSE file is Apache-2.0. These are preliminary repository-level findings only. Verify the canonical repo, exact commit, release tags, build workflows, source history, dependencies, security reports, and licensing of all bundled assets before adoption. The GitHub repository inspected is public and read-only to this account. No code has been copied or run.
+The repository README claims Apache-2.0. The inspected LICENSE file is Apache-2.0. Reviewed main commit: `13c99b06c49bb71366672cef1cc5638ab6e7eb1c` (`v0.6.0`). The source review confirms substantial MDM functionality, but remote control is stubbed, MFA is absent in v0.6.0, commercial SaaS operations remain to be built, and a real-device acceptance test is still required. Apache-2.0 and Headwind NOTICE obligations apply. No code has been copied or run.
 
 ### FleetDM
 Repository: https://github.com/fleetdm/fleet
