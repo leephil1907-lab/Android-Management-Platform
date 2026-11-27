@@ -1,0 +1,78 @@
+# Repository Audit — Initial Findings
+
+Audit date: 2026-11-27  
+Status: **In progress — source inspection only**  
+No upstream code has been copied, patched, executed or deployed as part of this audit.
+
+## 1. Candidate repositories
+
+| Component | Source | Initial finding | Decision |
+|---|---|---|---|
+| MDM server | https://github.com/h-mdm/hmdm-server | Public repository; default branch `master`; Maven multi-module Java project; Apache-2.0 LICENSE present | Keep as primary MDM candidate; build and security review required |
+| Android MDM agent | https://github.com/h-mdm/hmdm-android | Public repository; default branch `master`; Gradle Android project; Apache-2.0 LICENSE present | Keep as primary enrollment/management candidate |
+| Remote-support server candidate | https://github.com/met989/headwind_remote_control | Third-party repository, not under the h-mdm owner; README describes a custom Headwind/Janus integration and claims Apache-2.0 | Unverified candidate only; inspect complete source, provenance, dependencies and license notices before use |
+| Remote Android agent | No verified official repository identified yet | Earlier guessed `h-mdm/remote-control-android` path returned GitHub 404 | Do not depend on this path; locate and verify the actual agent source |
+
+## 2. Findings from source inspection
+
+### Headwind MDM server
+
+- README describes QR-code enrollment, application deployment, device groups, configurations, device status and plugin extensibility.
+- `pom.xml` defines a multi-module Maven build.
+- The POM declares Java 8 source compatibility and includes older framework/dependency versions. This requires dependency vulnerability review and a reproducible build on a supported JDK.
+- The repository contains an Apache License 2.0 file. Preserve copyright and NOTICE material when applicable.
+
+### Headwind Android agent
+
+- README documents Android Studio and command-line Gradle builds.
+- Current checked-in Gradle wrapper points to Gradle 8.13.
+- Root build file declares Android Gradle Plugin 8.13.2.
+- README's older instruction to install Gradle plugin 5.1.1 conflicts with the checked-in wrapper/build configuration; the wrapper and current build files should be treated as the source of truth, then validated in CI.
+- README describes optional Device Owner setup using Android Debug Bridge. Production enrollment must use the supported, documented provisioning flow.
+- Apache License 2.0 file is present.
+
+### Third-party remote-support candidate
+
+The repository README claims:
+- Janus/WebRTC screen streaming and browser viewing
+- Android MediaProjection screen capture
+- Accessibility-based user interaction
+- Headwind MDM SSO integration
+- An installer that configures Janus, Tomcat, web assets and firewall rules
+
+The inspected installer is a privileged system installer. It installs operating-system packages and modifies server configuration. **Do not run it on production or development infrastructure during the audit.** Review every script and packaged artifact in a disposable test VM first.
+
+The repository's README and LICENSE are claims by that repository; they do not establish upstream endorsement, code provenance, ownership of all bundled assets, or commercial rights to any separately sourced component.
+
+## 3. Immediate blockers
+
+1. Identify the actual Android remote-support agent source and verify its relationship to the server plugin.
+2. Inspect all installer, update and uninstall scripts before execution.
+3. Inspect bundled WAR/APK/JAR files and determine whether reproducible source builds are available.
+4. Record exact commit SHAs and tags for every dependency.
+5. Run dependency and secret scans.
+6. Build the MDM server and Android agent in clean environments.
+7. Verify Android version, OEM and Device Owner enrollment compatibility.
+8. Complete license and commercial redistribution review for every component.
+
+## 4. Build verification matrix
+
+| Project | Required check | Result |
+|---|---|---|
+| hmdm-server | Maven clean package in isolated environment | Not run |
+| hmdm-android | Gradle wrapper build in isolated environment | Not run |
+| Remote-support server candidate | Static review, dependency scan, script review, reproducible build | Not run |
+| Remote-support Android agent | Source identity, permissions review, build and device test | Not run |
+
+## 5. Acceptance criteria for closing Milestone 1
+
+- Every upstream source has a verified repository URL, commit SHA, tag and license.
+- No unverified or unavailable repository path remains in the dependency plan.
+- Clean build results and toolchain versions are recorded.
+- Third-party binaries have traceable origins or are excluded.
+- Privileged scripts have been reviewed without running them on a live host.
+- A written decision identifies which components are adopted, replaced or rejected.
+
+## 6. Next milestone
+
+After the audit closes: create pinned integration references, CI build checks, a development-only Compose environment and the first MDM adapter contract. Do not add production secrets or deploy customer devices at this stage.
