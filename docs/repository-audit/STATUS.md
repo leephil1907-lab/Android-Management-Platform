@@ -76,3 +76,15 @@ The repository's README and LICENSE are claims by that repository; they do not e
 ## 6. Next milestone
 
 After the audit closes: create pinned integration references, CI build checks, a development-only Compose environment and the first MDM adapter contract. Do not add production secrets or deploy customer devices at this stage.
+
+
+## 7. External repository review — 2026-11-27
+
+Detailed review: [EXTERNAL-REPOSITORY-REVIEW.md](./EXTERNAL-REPOSITORY-REVIEW.md)
+
+- `MinhasKamal/TrojanCockroach`: confirmed Windows stealth Trojan/spyware. Rejected entirely; no source or binary reuse.
+- `adonespitogo/AdoBot`: Android agent confirmed as spyware with hidden-app mode and sensitive personal-data collection. Rejected as an agent. Generic server-side authorization, audit-event, diagnostics and request-logging patterns may inform independent implementations only.
+- AdoBot's Android folder contains an MIT licence file, but complete repository/server/dependency licence scope is not established.
+- The published Headwind Remote documentation references an Android agent path that returned 404 when checked. Exact source identity and licensing remain unresolved; do not depend on that path or an unverified binary.
+- No code from either external repository has been copied or executed.
+- No application code has been implemented, built or deployed in this repository; it remains documentation-only.
